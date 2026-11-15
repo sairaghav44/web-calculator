@@ -124,4 +124,4 @@ web-calculator_v01/
 
 ## Developer
 
-Created as a personal learning project to explore frontend development, Python, Flask, and full-stack web development.
+Created as a personal learning project to explore frontend development, Python, Flask, and full-stack web development. starting of my backend journey :) youll see me around .

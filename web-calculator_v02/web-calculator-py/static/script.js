@@ -8,9 +8,16 @@ let selectedOperator = null;
 
 const buttons = document.querySelectorAll(".btn");
 
+const operationMap = {
+    "+": "add",
+    "−": "subtract",
+    "x": "multiply",
+    "÷": "divide"
+};
+
 for (const button of buttons) {
 
-    button.addEventListener("click", function () {
+    button.addEventListener("click", async function () {
 
         const value = button.textContent;
 
@@ -41,19 +48,28 @@ for (const button of buttons) {
 
             const secondOperand = Number(currentOperand.textContent);
 
-            let result;
+            const response = await fetch("/calculate", {
+                method: "POST",
 
-            if (selectedOperator === "+") {
-                result = firstOperand + secondOperand;
-            } else if (selectedOperator === "−") {
-                result = firstOperand - secondOperand;
-            } else if (selectedOperator === "x") {
-                result = firstOperand * secondOperand;
-            } else if (selectedOperator === "÷") {
-                result = firstOperand / secondOperand;
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    number1: firstOperand,
+                    number2: secondOperand,
+                    operation: operationMap[selectedOperator]
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                currentOperand.textContent = data.error;
+                return;
             }
 
-            currentOperand.textContent = result;
+            currentOperand.textContent = data.result;
 
             previousOperand.textContent = "";
 
